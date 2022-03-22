@@ -1,25 +1,16 @@
 <script>
-  import { initializeApp } from "firebase/app";
   import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
   import { fade } from "svelte/transition";
   import { replace } from "svelte-spa-router";
+  import { app } from "./stores";
 
   let loginError = "";
   let isLoginError = false;
 
-  const config = {
-    apiKey: "AIzaSyDDn00uprCYk36uf4UKH-COOPzsLuc1JkA",
-    authDomain: "putzfee-a3b88.firebaseapp.com",
-    databaseURL:
-      "https://putzfee-a3b88-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "putzfee-a3b88",
-    storageBucket: "putzfee-a3b88.appspot.com",
-    messagingSenderId: "174903135777",
-    appId: "1:174903135777:web:69ca3465bc5ab545c65d60",
-  };
+  let thisApp;
+  app.subscribe((value) => (thisApp = value));
 
-  const app = initializeApp(config);
-  const auth = getAuth(app);
+  const auth = getAuth(thisApp);
 
   const loginSubmit = async (form) => {
     form.preventDefault();
@@ -41,16 +32,16 @@
         switch (errorCode) {
           case "auth/user-not-found":
             loginError =
-              "Your E-Mail was not found, please enter a registered E-Mail address!";
+              "Die E-Mail wurde nicht erkannt, bitte eine gültige E-Mail eingeben!";
             break;
 
           case "auth/wrong-password":
-            loginError = "You entered a wrong password!";
+            loginError = "Das Passwort ist falsch!";
             break;
 
           case "auth/too-many-requests":
             loginError =
-              "The serve received too many requests, please wait before trying again...";
+              "Der Server hat zu viele Anfragen erhalten, bitte einen Moment warten...";
             break;
         }
       });
@@ -65,9 +56,9 @@
   out:fade={{ duration: 500 }}
   class="p-16 font-poppins select-none"
 >
-  <h1 class="text-center text-3xl mb-2">Welcome to ReFresh!</h1>
+  <h1 class="text-center text-3xl mb-2">Willkommen bei ReFresh!</h1>
   <img class="m-auto mb-2" src="../img/ReFresh-Logo128.png" alt="App Logo" />
-  <p class="text-center">Please log in to continue</p>
+  <p class="text-center">Bitte einloggen um fortzufahren</p>
 
   <div class="absolute top-1/2 left-1/4 right-1/4">
     <form on:submit={loginSubmit}>
@@ -83,7 +74,7 @@
         name="password"
         type="password"
         class="login-input"
-        placeholder="Password"
+        placeholder="Passwort"
         required
         minlength="8"
       />
