@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .login-input {
+    @apply block mb-4 w-full rounded-xl p-2 text-center border-2 border-black border-opacity-5 outline-none valid:border-green-400;
+  }
+
+  .login-button {
+    @apply mt-8 w-full bg-blue-400 text-white p-2 rounded-xl outline-none border-none cursor-pointer hover:bg-blue-500 active:bg-blue-600 transition-all;
+  }
+}
+
+:root {
+  overflow: hidden;
+}
