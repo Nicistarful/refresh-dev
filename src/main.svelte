@@ -1,70 +1,133 @@
 <script>
-	import { fade } from 'svelte/transition'
-	import { db, auth } from './stores'
-	import {
-		collection,
-		query,
-		where,
-		getDocs,
-		onSnapshot,
-		doc,
-		getDoc,
-	} from 'firebase/firestore'
+import {
+    fade
+} from "svelte/transition";
+import {
+    db,
+    auth
+} from "./stores";
+import {
+    collection,
+    query,
+    where,
+    getDocs,
+    onSnapshot,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc
+} from "firebase/firestore";
 
-	//Variables
-	const tasksRef = collection(db, 'tasks')
-	$: tasks = []
-	const user = auth.currentUser
-	const userName = getUserName()
+//Variables
+const tasksRef = collection(db, "tasks");
+$: tasks = [];
+$: userName = "";
+const user = auth.currentUser;
+const userId =
+    user == null || user === undefined ?
+    "5lSb7uK3jccB5gL4EyNCIedmv7F3" :
+    user.uid;
 
-	async function getUserName() {
-		const userRef = doc(db, 'users', user.uid)
-		const snap = await getDoc(userRef)
-		return snap.data().name
-	}
+try {
+    const userRef = doc(db, "users", userId);
+    getDoc(userRef).then((snapshot) => {
+        userName = snapshot.data().name;
+    });
+} catch (e) {
+    console.log(e);
+}
 
-	async function getTasks() {
-		try {
-			const q = query(tasksRef, where('user', '==', user.uid))
-			let documents = await getDocs(q)
-			return documents.docs
-		} catch (e) {
-			console.log(e)
-		}
-	}
+try {
+    const taskQuery = query(tasksRef, where("user", "==", userId));
+    getDocs(taskQuery).then((snapshot) => {
+        tasks = snapshot.docs;
+    });
+} catch (error) {
+    console.log(error);
+    tasks = ["Documents couldn't be loaded"];
+}
 
-	function listenToTasks() {
-		try {
-			const q = query(tasksRef, where('user', '==', user.uid))
-			const unsubscribe = onSnapshot(q, snapshot => {
-				tasks = snapshot.docs
-			})
-		} catch (e) {
-			console.log(e)
-		}
-	}
+try {
+    const subscribeQuery = query(tasksRef, where("user", "==", userId));
+    onSnapshot(subscribeQuery, (snapshot) => {
+        snapshot.docs.forEach((doc) => {
+            tasks.push(doc);
+        });
+    });
+} catch (e) {
+    console.log(e);
+}
 
-	listenToTasks()
+const refresh = () => {
+    const taskQuery = query(tasksRef, where("user", "==", userId));
+    getDocs(taskQuery).then((snapshot) => {
+        tasks = snapshot.docs;
+    });
+}
+
+const markAsDone = (task) => {
+  if(task.data().done == false) {
+    updateDoc(doc(db, "tasks", task.id), {
+        done: true
+    })
+  } else {
+    updateDoc(doc(db, "tasks", task.id), {
+        done: false
+    })
+  }
+    refresh()
+}
+
+const deleteTask = (task) => {
+  deleteDoc(doc(db, "tasks", task.id))
+  refresh()
+}
 </script>
 
 <main in:fade={{ delay: 500 }}>
-	<nav
-		class="bg-blue-400 shadow-md py-2 px-6 text-white grid grid-cols-3 place-items-center"
-	>
-		{#await userName then name}
-			<h1 class="justify-self-start">Willkommen, {name}</h1>
-		{/await}
-		<div class="justify-self-center">
-			<button class="navbar-button mx-2">Aufgaben</button>
-			<button class="navbar-button mx-2">Gruppen</button>
-		</div>
-		<div class="justify-self-end">
-			<button on:click={() => window.close()}
-				><i class="fa-solid fa-xmark navbar-icon" /></button
-			>
-		</div>
-	</nav>
-	{#each tasks as task}
-		<p>{task.description}</p>
-	{/each}
-</main>
+    <nav
+        class="bg-blue-400 shadow-md py-2 px-6 text-white grid grid-cols-3 place-items-center"
+        >
+        <h1 class="justify-self-start">Willkommen, {userName}</h1>
+
+        <div class="justify-self-center">
+            <button class="navbar-button mx-2">Aufgaben</button>
+            <button class="navbar-button mx-2">Gruppen</button>
+        </div>
+        <div class="justify-self-end">
+            <button on:click={refresh}
+                ><i class="fa-solid fa-refresh navbar-icon" /></button
+                >
+                </div>
+                </nav>
+                <div class="p-8 grid grid-cols-3">
+                  <div class="grid grid-cols-3 font-bold gap-8 col-span-2">
+                      <h2>Name</h2>
+                      <h2>Fällig bis</h2>
+                      {#each tasks as task}
+                      {#if task.data().done == true}
+                      <div class="grid grid-cols-3 col-span-3 font-light gap-8 text-green-400">
+                          <p>{task.data().name}</p>
+                          <p>{task.data().date.toDate().toDateString()}</p>
+                          <div class="justify-self-end">
+                              <button on:click={() => deleteTask(task)}><i class="fa fa-trash ml-4 opacity-50 hover:opacity-100"></i></button>
+                              <button><i class="fa fa-info ml-4 opacity-50 hover:opacity-100"></i></button>
+                              <button on:click={() => markAsDone(task)}><i class="fa fa-check ml-4 opacity-50 hover:opacity-100"></i></button>
+                          </div>
+                      </div>
+                      {:else}
+                      <div class="grid grid-cols-3 col-span-3 font-light gap-8">
+                          <p>{task.data().name}</p>
+                          <p>{task.data().date.toDate().toDateString()}</p>
+                          <div class="justify-self-end">
+                              <button on:click={() => deleteTask(task)}><i class="fa fa-trash ml-4 opacity-50 hover:opacity-100"></i></button>
+                              <button><i class="fa fa-info ml-4 opacity-50 hover:opacity-100"></i></button>
+                              <button on:click={() => markAsDone(task)}><i class="fa fa-check ml-4 opacity-50 hover:opacity-100"></i></button>
+                          </div>
+                      </div>
+                      {/if}
+                      {/each}
+                  </div>
+                </div>
+                </main>
