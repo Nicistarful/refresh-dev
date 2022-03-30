@@ -7,7 +7,10 @@
 	"scripts": {
 		"build": "rollup -c",
 		"dev": "rollup -c -w",
-		"start": "concurrently \"npx tailwindcss -i ./public/global.css -o ./public/build/bundle.css --watch\" \"electron .\"",
+		"start": "concurrently npm:start-tailwind npm:start-electron",
+		"start-tailwind": "npx tailwindcss -i ./public/global.css -o ./public/build/bundle.css --watch",
+		"start-electron": "electron .",
+		"start-sirv": "sirv public --dev",
 		"dist": "npm run build && electron-builder"
 	},
 	"devDependencies": {
@@ -33,6 +36,7 @@
 		"electron-reload": "^2.0.0-alpha.1",
 		"firebase": "^9.6.9",
 		"sirv-cli": "^2.0.0",
+		"svelte-simple-modal": "^1.3.1",
 		"svelte-spa-router": "^3.2.0"
 	}
 }
