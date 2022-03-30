@@ -17,7 +17,7 @@
 			.then(userCredential => {
 				// Signed in
 				const user = userCredential.user
-				replace('/main')
+				replace('/tasks')
 				// ...
 			})
 			.catch(error => {

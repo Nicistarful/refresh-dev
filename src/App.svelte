@@ -1,11 +1,13 @@
 <script>
 	import Router from 'svelte-spa-router'
 	import Login from './login.svelte'
-	import Main from './main.svelte'
+	import Tasks from './tasks.svelte'
+	import Groups from './groups.svelte'
 
 	const routes = {
 		'/': Login,
-		'/main': Main,
+		'/tasks': Tasks,
+		'/groups': Groups,
 	}
 </script>
 

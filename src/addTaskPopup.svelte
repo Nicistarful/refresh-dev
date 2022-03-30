@@ -26,7 +26,7 @@
 
 {#if !hidden}
 	<main class="p-8">
-		<form class="flex flex-col" on:submit={submit}>
+		<form class="flex flex-col h-fit" on:submit={submit}>
 			<div class="w-full h-content flex flex-row items-baseline">
 				<label for="taskname" class="form-label w-60"
 					>Name der Aufgabe:</label
