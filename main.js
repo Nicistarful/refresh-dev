@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, globalShortcut } = require('electron')
 const path = require('path')
 require('electron-reload')(__dirname)
 
@@ -18,7 +18,7 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadFile('public/index.html')
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -26,6 +26,8 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
+  globalShortcut.register('Control+Shift+I', () => { return false })
+  globalShortcut.register('F12', () => { return false })
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
