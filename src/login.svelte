@@ -25,11 +25,7 @@
 		const name = form.target.elements.name.value
 		form.preventDefault()
 
-		const usersRef = collection(db, 'users')
-		const q = query(usersRef, where('mail', '==', mail))
-		const snapshot = await getDocs(q)
-		if (snapshot.docs[0] === undefined) {
-			console.log('Email does not exist!')
+		if (name != '') {
 			const createdUser = await createUserWithEmailAndPassword(
 				auth,
 				mail,
@@ -41,11 +37,7 @@
 				mail: mail,
 			}
 			await setDoc(doc(db, 'users', uid), data)
-			window.alert('Account wurde erstellt, bitte nun einloggen')
-			form.target.reset()
-			return
-		} else if (snapshot.docs[0].data().mail === mail) {
-			console.log('Email exists!')
+			setTimeout(() => null, 1000)
 		}
 
 		signInWithEmailAndPassword(auth, mail, password)
