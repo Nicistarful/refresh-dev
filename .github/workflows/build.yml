@@ -28,3 +28,4 @@ jobs:
         allowUpdates: true
         artifactErrorsFailBuild: true
         artifacts: "/dist/*.zip"
+        token: ${{ secrets.GH_TOKEN }}
