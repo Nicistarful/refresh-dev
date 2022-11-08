@@ -1,6 +1,7 @@
 {
 	"name": "refresh",
-	"version": "1.0.2",
+	"version": "1.1.0",
+	"author": "PutzFee Inc.",
 	"private": true,
 	"description": "A minimal Electron application",
 	"main": "main.js",
@@ -11,13 +12,13 @@
 		"start-tailwind": "npx tailwindcss -i ./public/global.css -o ./public/build/bundle.css --watch",
 		"start-electron": "electron .",
 		"start-sirv": "sirv public --dev",
-		"dist": "npm run build && electron-builder -p never"
+		"dist": "npm run build && electron-builder"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^17.0.0",
 		"@rollup/plugin-node-resolve": "^11.0.0",
 		"electron": "^17.2.0",
-		"electron-builder": "^22.14.13",
+		"electron-builder": "^23.6.0",
 		"eslint": "^7.32.0",
 		"eslint-config-standard": "^16.0.3",
 		"eslint-plugin-import": "^2.25.4",
