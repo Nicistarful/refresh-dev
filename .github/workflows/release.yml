@@ -1,10 +1,9 @@
 name: Dister
 
 on:
-  workflow_run:
-    workflows: [CodeQL, MobSF]
-    types:
-      - completed
+  create:
+    tags:
+      - v*
     
 jobs:
   dist:
