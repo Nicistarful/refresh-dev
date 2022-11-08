@@ -1,9 +1,9 @@
 name: Bob The Builder
 
 on:
-  workflow_run:
-    workflows: [CodeQL, mobsfscan]
-    branches: "main"
+  push:
+    tags:
+      - 'v*'
     
 jobs:
   build:
