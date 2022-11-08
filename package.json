@@ -3,7 +3,7 @@
 	"version": "1.1.0",
 	"author": "PutzFee Inc.",
 	"private": true,
-	"description": "A minimal Electron application",
+	"description": "Household manager",
 	"main": "main.js",
 	"scripts": {
 		"build": "rollup -c",
