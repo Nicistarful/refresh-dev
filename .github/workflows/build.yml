@@ -3,15 +3,19 @@ name: Bob The Builder
 on:
   workflow_run:
     workflows: [CodeQL, mobsfscan]
-    branches: 'main'
+    branches: "main"
     
 jobs:
   build:
     name: Build and Deploy
     runs-on: macos-latest
+    permissions:
+      contents: write
     steps:
     - name: Checkout
       uses: actions/checkout@v2.5.0
+      with:
+        fetch-depth: 0
     - name: Setup Node.js environment
       uses: actions/setup-node@v3.5.1
     - name: Install dependencies
@@ -23,4 +27,4 @@ jobs:
       with:
         allowUpdates: true
         artifactErrorsFailBuild: true
-        artifact: '/dist/*.zip'
+        artifacts: "/dist/*.zip"
