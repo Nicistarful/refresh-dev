@@ -12,7 +12,7 @@
 		"start-tailwind": "npx tailwindcss -i ./public/global.css -o ./public/build/bundle.css --watch",
 		"start-electron": "electron .",
 		"start-sirv": "sirv public --dev",
-		"dist": "npm run build && electron-builder"
+		"dist": "npm run build && electron-builder --publish never"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^17.0.0",
