@@ -1,9 +1,10 @@
 name: Dister
 
 on:
-  push:
-    branches: ['main']
-    tags: 'v*'
+  workflow_run:
+    workflows: [CodeQL, MobSF]
+    types:
+      - completed
     
 jobs:
   dist:
