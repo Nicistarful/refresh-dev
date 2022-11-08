@@ -6,12 +6,9 @@
 name: MobSF
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]  
-  schedule:
-    - cron: '36 17 * * 3'
+  workflow_run:
+    workflows: CodeQL
+    types: completed
 
 permissions:
   contents: read
