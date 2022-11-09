@@ -16,11 +16,6 @@ jobs:
       run: npm ci
     - name: Start Service
       run: (npm run start-sirv&)
-    
-  hawkscan:
-    needs: prep
-    runs-on: ubuntu-latest
-    steps:
     - name: StackHawk Scan
       uses: stackhawk/hawkscan-action@v2.0.0
       with:
