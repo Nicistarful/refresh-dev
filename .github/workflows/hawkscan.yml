@@ -5,10 +5,18 @@ on:
     branches: 'main'
     
 jobs:
-  hawkscan:
+  prep:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2.5.0
+    - name: Checkout Code
+      uses: actions/checkout@v2.5.0
+    - name: Start Service
+      run: npm run start-sirv
+    
+  hawkscan:
+    needs: prep
+    runs-on: ubuntu-latest
+    steps:
     - name: StackHawk Scan
       uses: stackhawk/hawkscan-action@v2.0.0
       with:
