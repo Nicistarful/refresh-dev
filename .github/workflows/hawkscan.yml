@@ -3,6 +3,7 @@ name: Hawkscan
 on:
   pull_request:
     branches: [ "main" ]
+    types: [ "closed" ]
     
 jobs:
   prep:
