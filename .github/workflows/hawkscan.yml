@@ -10,6 +10,8 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2.5.0
+    - name: Set-Up NPM
+      uses: actions/setup-node@v3.5.1
     - name: Start Service
       run: npm run start-sirv
     
