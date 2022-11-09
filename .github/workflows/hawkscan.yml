@@ -15,7 +15,7 @@ jobs:
     - name: Install Dependencies
       run: npm ci
     - name: Start Service
-      run: npm run start-sirv
+      run: (npm run start-sirv&)
     
   hawkscan:
     needs: prep
